@@ -1,16 +1,18 @@
 # macOS system cache
 .DS_Store
 
+
 # python runtime cache
 __pycache__/
 
+
 # virtual environment
 venv/
+
 
 # Large files
 ## images
 stimuli/
 
-
-# testing files
+## testing files
 playground/
