@@ -1,0 +1,3 @@
+[submodule "external/SLIP"]
+	path = external/SLIP
+	url = https://github.com/facebookresearch/SLIP.git
