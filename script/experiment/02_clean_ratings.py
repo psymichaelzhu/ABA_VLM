@@ -3,6 +3,7 @@ import pandas as pd
 
 # for EmoMadrid
 def clean_emomadrid_ratings():
+    #raw csv downloaded from EmoMadrid official website -  2 Index
     raw_path = Path("stimuli/EmoMadrid/raw/1_EMindex_2025_07_07(EMindex).csv")
     clean_path = Path("stimuli/EmoMadrid/ratings.csv")
 
@@ -38,10 +39,41 @@ def clean_emomadrid_ratings():
     df.columns = df.columns.str.replace(" ", "_", regex=False)
 
     df.to_csv(clean_path, index=False)
+    print(f"EmoMadrid ratings have been cleaned and saved to {clean_path}")
+
+
+# for OASIS
+def clean_oasis_ratings():
+    raw_path = Path("stimuli/OASIS/raw/oasis.csv")
+    clean_path = Path("stimuli/OASIS/ratings.csv")
+
+    df = pd.read_csv(
+        raw_path
+    )
+
+    # Rename key columns
+    df = df.rename(columns={
+        "Theme": "Image_id",
+        "Valence_mean": "Valence",
+        "Arousal_mean": "Arousal"
+    })
+
+    # Drop unnecessary columns
+    columns_to_drop = [
+        "Source"
+    ]
+    df = df.drop(columns=columns_to_drop)
+    df.drop(df.columns[0], axis = 1)
+    
+    df.to_csv(clean_path, index=False)
+    print(f"OASIS ratings have been cleaned and saved to {clean_path}")
+
+
 
 
 def main():
     clean_emomadrid_ratings()
+    clean_oasis_ratings()
 
 
 if __name__ == "__main__":

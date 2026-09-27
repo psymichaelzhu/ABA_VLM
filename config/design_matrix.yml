@@ -1,0 +1,7 @@
+dm_862b31c6:
+  timestamp: 2026-09-27-06-13-49
+  imageset_id: OASIS
+  subset: null
+  n_trials: 3
+  n_per_trial: 2
+  seed: 42

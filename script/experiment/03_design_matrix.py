@@ -2,8 +2,8 @@
 Generate the design matrix for a given imageset, including trial-by-trial composition.
 """
 
-from config.constants import N_TRIALS, N_PER_TRIAL, IMAGE_EXTENSIONS
-from script.utils import traverse_imageset
+from config.constants import N_TRIALS, N_PER_TRIAL, SEED
+from script.utils import traverse_imageset, log_metadata
 
 import argparse
 import random
@@ -17,7 +17,6 @@ def get_image_ids(imageset_id: str, subset: str) -> list:
     Get the image IDs for a given imageset and subset (if specified).
     """
     ratings_path = Path("stimuli", imageset_id, "ratings.csv")
-    print(ratings_path)
     
     ratings_df = pd.read_csv(ratings_path)
     if subset:
@@ -43,14 +42,14 @@ def generate_design_matrix(image_ids: list, n_trials: int, n_per_trial: int) -> 
         generate_trials = n_trials
 
     # sample, making sure unique trials
-    random.seed(42)
+    
+    rng = random.Random(SEED)
 
     design_matrix = set()
     while len(design_matrix) < generate_trials:
-        trial = tuple(random.sample(image_ids, n_per_trial))
+        trial = tuple(rng.sample(image_ids, n_per_trial))
         design_matrix.add(trial)
-
-    design_matrix = sorted(design_matrix) # sort for consistent output
+    design_matrix = sorted(design_matrix)
 
     # convert to DataFrame
     design_matrix_df = pd.DataFrame(
@@ -70,15 +69,28 @@ def main():
     args = parser.parse_args() 
     imageset_id = args.imageset_id
     subset = args.subset
+    
+    dm_key = log_metadata(
+        "design_matrix",
+        imageset_id= imageset_id,
+        subset = subset,
+        n_trials = N_TRIALS,
+        n_per_trial = N_PER_TRIAL,
+        seed = SEED
+    )
+    output_path = Path("data", "design_matrix", dm_key).with_suffix(".csv")
 
-    image_ids = get_image_ids(imageset_id, subset)
+    if output_path.exists():
+        print(f"Design matrix already exists: {dm_key}")
+    else: 
+        image_ids = get_image_ids(imageset_id, subset)
 
-    design_matrix = generate_design_matrix(image_ids, N_TRIALS, N_PER_TRIAL)
-    print(design_matrix)
-
-    # save to CSV
-    #df = pd.DataFrame(list(design_matrix), columns=[f"Image_{i}" for i in range(N_PER_TRIAL)])
-    #df.to_csv(f"design_matrix_{imageset_id}_{subset}.csv", index=False)
+        design_matrix = generate_design_matrix(image_ids, N_TRIALS, N_PER_TRIAL)
+        
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        design_matrix.to_csv(output_path, index=False)
+        print(f"Design matrix saved to {output_path}")
 
 if __name__ == "__main__":
     main()
