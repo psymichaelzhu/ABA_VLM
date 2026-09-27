@@ -26,3 +26,17 @@ ABA_VLM
 ```
 
 
+### Clone the repository
+
+This project uses [facebook SLIP](https://github.com/facebookresearch/SLIP?utm_source=chatgpt.com) as a Git submodule.
+
+```bash
+git clone --recurse-submodules https://github.com/psymichaelzhu/ABA_VLM.git
+cd ABA_VLM
+
+conda env create -f environment.yml
+conda activate slip_aba
+
+bash scripts/download_checkpoints.sh
+```
+

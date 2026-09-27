@@ -86,7 +86,22 @@ def log_metadata(config_name: str, **kwargs) -> str:
 
 
 
+###########################################################
+# deep learning
+###########################################################
 
+def get_device():
+    import torch
+    if torch.cuda.is_available():
+        return torch.device("cuda")
+
+    if (
+        hasattr(torch.backends, "mps")
+        and torch.backends.mps.is_available()
+    ):
+        return torch.device("mps")
+
+    return torch.device("cpu")
 
 
 
