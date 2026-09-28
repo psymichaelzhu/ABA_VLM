@@ -42,7 +42,7 @@ def load_model(checkpoint_path: Path, device: torch.device) -> tuple[torch.nn.Mo
 def get_preprocess():
     """Return the official SLIP evaluation preprocessing."""
     return transforms.Compose([
-        # resize, crop and convert are ignored since input has been standardized to 224x224 and RGB
+        # resize, crop and convert are ignored since our input has been standardized to 224x224 and RGB
         transforms.ToTensor(),
         transforms.Normalize(
             mean=[0.485, 0.456, 0.406],
@@ -95,6 +95,7 @@ def main(model_type: str):
         f"checkpoints/fb_slip/{model_type}_base_25ep.pt"
     )
 
+    # change to obtain from composite generation
     image_paths = [
         Path("stimuli/OASIS/images/Acorns 1.jpg"),
         Path("stimuli/OASIS/images/Acorns 2.jpg"),
@@ -109,32 +110,26 @@ def main(model_type: str):
 
     device = get_device()
 
-    # Load model
     model, checkpoint = load_model(checkpoint_path, device)
     print("Model:", checkpoint["args"].model)
 
-    # Preprocessing
     preprocess = get_preprocess()
 
-    # register attention hooks
     attention_cache, handles = register_attention_hooks(model)
 
-    # Extract embeddings
     embeddings = encode_images(
         model,
         images,
         preprocess,
         device
     )
-    print("Embedding shape:", embeddings.shape)
+    #print("Embedding shape:", embeddings.shape)
     # [n_images, embedding_dim]
 
-    # Extract attention
     attentions = torch.stack(attention_cache, dim=1)
-    print("Attention shape:", attentions.shape)
+    #print("Attention shape:", attentions.shape)
     # [n_images, n_layers, n_heads, n_tokens, n_tokens]
 
-    # Remove attention hooks
     remove_hooks(handles)
 
     
