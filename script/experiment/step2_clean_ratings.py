@@ -38,6 +38,9 @@ def clean_emomadrid_ratings():
     # Replace remaining spaces in column names with underscores
     df.columns = df.columns.str.replace(" ", "_", regex=False)
 
+    # Strip leading/trailing whitespace from image IDs
+    df["Image_id"] = df["Image_id"].str.strip()
+
     df.to_csv(clean_path, index=False)
     print(f"EmoMadrid ratings have been cleaned and saved to {clean_path}")
 
@@ -63,7 +66,10 @@ def clean_oasis_ratings():
         "Source"
     ]
     df = df.drop(columns=columns_to_drop)
-    df.drop(df.columns[0], axis = 1)
+    df = df.drop(df.columns[0], axis=1)
+
+    # Strip leading/trailing whitespace from image IDs
+    df["Image_id"] = df["Image_id"].str.strip()
     
     df.to_csv(clean_path, index=False)
     print(f"OASIS ratings have been cleaned and saved to {clean_path}")

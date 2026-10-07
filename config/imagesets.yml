@@ -1,0 +1,11 @@
+OASIS:
+  image_dir: stimuli/OASIS/images
+  ratings: stimuli/OASIS/ratings.csv
+
+EmoMadrid:
+  image_dir: stimuli/EmoMadrid/images
+  ratings: stimuli/EmoMadrid/ratings.csv
+
+NAPS:
+  image_dir: stimuli/NAPS/images
+  ratings: stimuli/NAPS/ratings.csv

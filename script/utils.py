@@ -4,6 +4,15 @@
 
 from pathlib import Path
 from PIL import Image
+import pandas as pd
+
+from typing import Optional
+
+import torch
+import torch.nn.functional as F
+
+from config.constants import LAYOUT
+
 
 def crop_black_borders(img: Image.Image) -> Image.Image:
     """
@@ -37,6 +46,19 @@ def traverse_imageset(imageset_id: str, image_extensions: set) -> list:
     print(len(image_paths))
     return image_paths
 
+
+def get_image_ids(imageset_id: str, subset: Optional[str] = None) -> list:
+    """
+    Get the image IDs for a given imageset and subset (if specified).
+    """
+    ratings_path = Path("stimuli", imageset_id, "ratings.csv")
+    
+    ratings_df = pd.read_csv(ratings_path)
+    if subset:
+        image_ids = ratings_df.loc[ratings_df["Category"] == subset, "Image_id"].tolist()
+    else:
+        image_ids = ratings_df["Image_id"].tolist()
+    return image_ids
 
 ###########################################################
 # Configuration I/O
@@ -102,6 +124,26 @@ def get_device():
         return torch.device("mps")
 
     return torch.device("cpu")
+
+
+def resize_image_cache(
+    image_cache: dict[str, torch.Tensor],
+) -> dict[str, torch.Tensor]:
+    """Resize all cached images to the layout item size."""
+
+    import torch
+
+    images = torch.stack(list(image_cache.values()))
+
+    item_w, item_h = LAYOUT["item_size"]
+    images = F.interpolate(
+        images,
+        size=(item_h, item_w),
+        mode="bilinear",
+        align_corners=False,
+    )
+
+    return dict(zip(image_cache.keys(), images))
 
 
 

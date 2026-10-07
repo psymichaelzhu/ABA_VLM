@@ -3,7 +3,7 @@ Generate the design matrix for a given imageset, including trial-by-trial compos
 """
 
 from config.constants import N_TRIALS, N_PER_TRIAL, SEED
-from script.utils import traverse_imageset, log_metadata
+from script.utils import traverse_imageset, log_metadata, get_image_ids
 
 import argparse
 import random
@@ -12,18 +12,6 @@ import pandas as pd
 from math import perm
 
 
-def get_image_ids(imageset_id: str, subset: str) -> list:
-    """
-    Get the image IDs for a given imageset and subset (if specified).
-    """
-    ratings_path = Path("stimuli", imageset_id, "ratings.csv")
-    
-    ratings_df = pd.read_csv(ratings_path)
-    if subset:
-        image_ids = ratings_df.loc[ratings_df["Category"] == subset, "Image_id"].tolist()
-    else:
-        image_ids = ratings_df["Image_id"].tolist()
-    return image_ids
 
 def generate_design_matrix(image_ids: list, n_trials: int, n_per_trial: int) -> pd.DataFrame:
     """

@@ -5,3 +5,38 @@ dm_862b31c6:
   n_trials: 3
   n_per_trial: 2
   seed: 42
+dm_5561ca04:
+  timestamp: 2026-10-07-12-32-34
+  imageset_id: test
+  subset: null
+  n_trials: 3
+  n_per_trial: 2
+  seed: 42
+dm_b502fc8a:
+  timestamp: 2026-10-07-12-40-29
+  imageset_id: test
+  subset: null
+  n_trials: 30
+  n_per_trial: 2
+  seed: 42
+dm_c1019ae3:
+  timestamp: 2026-10-07-12-55-49
+  imageset_id: test
+  subset: null
+  n_trials: 20000
+  n_per_trial: 2
+  seed: 42
+dm_f5f86773:
+  timestamp: 2026-10-07-12-55-56
+  imageset_id: OASIS
+  subset: null
+  n_trials: 20000
+  n_per_trial: 2
+  seed: 42
+dm_0bdf71da:
+  timestamp: 2026-10-07-15-20-18
+  imageset_id: Emomadrid
+  subset: null
+  n_trials: 20000
+  n_per_trial: 2
+  seed: 42

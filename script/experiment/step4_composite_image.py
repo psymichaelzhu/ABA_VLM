@@ -39,6 +39,9 @@ def make_composite(dm_name: str, layout: dict, trial_id: int) -> Image.Image:
     return composite
 
 
+
+
+
 def main():
     composite_image = make_composite("dm_862b31c6",LAYOUT,2)
     composite_image.show()

@@ -1,0 +1,9 @@
+HorizontalPairwise_TrainingSize_Grey:
+  canvas_size: [224, 224]
+  item_size: [96, 96]
+
+  positions:
+    - [0, 64]
+    - [128, 64]
+
+  background: [128, 128, 128]
