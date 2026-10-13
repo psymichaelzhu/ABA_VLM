@@ -1,7 +1,0 @@
-OASIS_all_pairwise_10000_seed42:
-  imageset: OASIS
-  subset: null
-
-  design: pairwise
-  n_trials: 20000
-  seed: 42

@@ -1,0 +1,93 @@
+# %% Layout presets
+# How items are presented within each trial
+layouts:
+  grey_224: &grey_224
+    unit: pixel
+    canvas_size: [224, 224]
+    item_size: [96, 96]
+    positions:
+      - [0, 64]
+      - [128, 64]
+    background: [128, 128, 128]
+
+  white_224:
+    <<: *grey_224
+    background: [255, 255, 255]
+
+
+# %% Trial design presets
+# How items are sampled and assigned to trials
+trial_designs:
+  pairwise_20k: &pairwise_20k
+    n_trials: 20000
+    n_items_per_trial: 2
+    sampling_seed: 42
+
+  pairwise_100k:
+    <<: *pairwise_20k
+    n_trials: 100000
+
+
+# %% Metric presets
+# How model responses are quantified
+metrics:
+  main_2metrics:
+    embedding_similarity:
+      present: semi
+      embedding_function: encode_image
+
+    attention_rollout:
+      head_aggregation: max
+      discard_ratio: 0.70
+      region_summary: mean
+
+
+# %% Protocol presets
+# Complete experimental protocols shared across conditions
+protocol_presets:
+  Oct9:
+    layout: grey_224
+    trial_design: pairwise_100k
+    metrics: main_2metrics
+
+
+# %% Experiment sweeps
+# Factors varied within the selected experimental protocol
+experiment_sweeps:
+  Oct9_sweep:
+    protocol: Oct9
+    models:
+      - clip_large_25ep
+      - simclr_large_25ep
+      - slip_large_25ep
+      
+      - clip_base_25ep
+      - simclr_base_25ep
+      - slip_base_25ep
+      
+      - clip_small_25ep
+      - simclr_small_25ep
+      - slip_small_25ep
+
+    imagesets:
+      OASIS:
+        - all
+      EmoMadrid:
+        - all
+      NAPS:
+        - all
+
+
+# %% Active run
+run:
+  sweep: Oct9_sweep
+
+
+
+
+
+
+
+
+
+
